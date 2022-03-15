@@ -1,13 +1,17 @@
 package com.disneyworld.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.disneyworld.dto.MediaDTO;
+import com.disneyworld.dto.ResponseMedia;
 import com.disneyworld.entities.Media;
+import com.disneyworld.exceptions.DisneyAppException;
 import com.disneyworld.exceptions.ResourceNotFoundException;
 import com.disneyworld.repositories.MediaRepository;
 
@@ -35,9 +39,19 @@ public class MediaServiceImp implements MediaService{
 	}
 
 	@Override
-	public List<MediaDTO> getAllMedia() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ResponseMedia> getAllMedia() {
+		List<Media> medias = mediaRepo.findAll();
+		List<ResponseMedia> responseMedias = new ArrayList<ResponseMedia>();
+		for(Media media : medias) {
+			ResponseMedia responseMedia = new ResponseMedia();
+			responseMedia.setId(media.getId());
+			responseMedia.setTitle(media.getTitle());
+			responseMedia.setImage(media.getImage());
+			responseMedia.setReleaseDate(media.getReleaseDate());
+			
+			responseMedias.add(responseMedia);
+		}
+		return responseMedias;
 	}
 
 	@Override
@@ -71,5 +85,62 @@ public class MediaServiceImp implements MediaService{
 	private Media mapEntity(MediaDTO mediaDTO) {
 		Media media = modelMapper.map(mediaDTO, Media.class);
 		return media;
+	}
+
+	//EJERCICIO 6-------------------------
+	
+	@Override
+	public List<ResponseMedia> getMediaByTitle(String value) {
+		List<Media> medias = mediaRepo.getListByTitle(value);
+		List<ResponseMedia> responseMedias = new ArrayList<ResponseMedia>();
+		for(Media media : medias) {
+			ResponseMedia responseMedia = new ResponseMedia();
+			responseMedia.setId(media.getId());
+			responseMedia.setTitle(media.getTitle());
+			responseMedia.setImage(media.getImage());
+			responseMedia.setReleaseDate(media.getReleaseDate());
+			
+			responseMedias.add(responseMedia);
+		}
+		return responseMedias;
+	}
+
+	@Override
+	public List<ResponseMedia> getMediaByGenre(Long value) {
+		List<Media> medias = mediaRepo.getListByGenre(value);
+		List<ResponseMedia> responseMedias = new ArrayList<ResponseMedia>();
+		for(Media media : medias) {
+			ResponseMedia responseMedia = new ResponseMedia();
+			responseMedia.setId(media.getId());
+			responseMedia.setTitle(media.getTitle());
+			responseMedia.setImage(media.getImage());
+			responseMedia.setReleaseDate(media.getReleaseDate());
+			
+			responseMedias.add(responseMedia);
+		}
+		return responseMedias;
+	}
+
+	@Override
+	public List<ResponseMedia> getMediasByReleaseDate(String value) {
+		List<Media> medias = new ArrayList<Media>();
+		if(value.equalsIgnoreCase("asc")) {
+			medias = mediaRepo.findAllByOrderByReleaseDateAsc();
+		}else if(value.equalsIgnoreCase("desc")) {
+			medias = mediaRepo.findAllByOrderByReleaseDateDesc();
+		}else {
+			throw new DisneyAppException(HttpStatus.BAD_REQUEST, "Invalid sort method... try with ASC or DESC.");
+		}
+		List<ResponseMedia> responseMedias = new ArrayList<ResponseMedia>();
+		for(Media media : medias) {
+			ResponseMedia responseMedia = new ResponseMedia();
+			responseMedia.setId(media.getId());
+			responseMedia.setTitle(media.getTitle());
+			responseMedia.setImage(media.getImage());
+			responseMedia.setReleaseDate(media.getReleaseDate());
+			
+			responseMedias.add(responseMedia);
+		}
+		return responseMedias;
 	}
 }

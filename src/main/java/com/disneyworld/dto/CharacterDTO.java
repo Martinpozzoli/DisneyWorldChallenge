@@ -19,10 +19,8 @@ public class CharacterDTO {
 	@Size(min = 2, message = "Name must be at least 2 characters long")
 	private String name;
 	
-	@NotEmpty
 	private int age;
 	
-	@NotEmpty
 	private double weight;
 	
 	@NotEmpty

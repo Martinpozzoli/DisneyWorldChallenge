@@ -1,5 +1,7 @@
 package com.disneyworld.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.disneyworld.dto.CharacterDTO;
+import com.disneyworld.dto.ResponseCharacter;
 import com.disneyworld.entities.Image;
 import com.disneyworld.services.CharacterService;
 import com.disneyworld.services.ImageService;
@@ -31,9 +34,34 @@ public class CharacterController {
 	@Autowired
 	private ImageService imageService;
 	
+	@GetMapping()
+	public List<ResponseCharacter> getAllCharacters(){
+		return characterService.getAllCharacters();
+	}
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<CharacterDTO> getCharacterById(@PathVariable(name = "id") Long id){
 		return ResponseEntity.ok(characterService.getCharacterById(id));
+	}
+	
+	@GetMapping("/{name}")
+	public List<ResponseCharacter> getCharactersByName(@PathVariable(name = "name") String name){
+		return characterService.getCharactersByName(name);
+	}
+	
+	@GetMapping("/{age}")
+	public List<ResponseCharacter> getCharactersByAge(@PathVariable(name = "age") int age){
+		return characterService.getCharactersByAge(age);
+	}
+	
+	@GetMapping("/{weight}")
+	public List<ResponseCharacter> getCharactersByWeight(@PathVariable(name = "weight") double weight){
+		return characterService.getCharactersByWeight(weight);
+	}
+	
+	@GetMapping("/{movies}")
+	public List<ResponseCharacter> getCharactersByMediaId(@PathVariable(name = "movies") Long mediaId){
+		return characterService.getCharactersByMediaId(mediaId);
 	}
 	
 	@PostMapping
@@ -71,8 +99,6 @@ public class CharacterController {
 		characterService.deleteCharacter(id);
 		return new ResponseEntity<>("Character successfully deleted", HttpStatus.OK);
 	}
-	
-	
 	
 	
 }

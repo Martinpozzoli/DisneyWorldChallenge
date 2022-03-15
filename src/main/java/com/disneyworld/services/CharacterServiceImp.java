@@ -1,5 +1,6 @@
 package com.disneyworld.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.disneyworld.entities.Character;
 import com.disneyworld.exceptions.ResourceNotFoundException;
 import com.disneyworld.dto.CharacterDTO;
+import com.disneyworld.dto.ResponseCharacter;
 import com.disneyworld.repositories.CharacterRepository;
 
 @Service
@@ -38,9 +40,18 @@ public class CharacterServiceImp implements CharacterService{
 	}
 
 	@Override
-	public List<CharacterDTO> getAllCharacters() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ResponseCharacter> getAllCharacters() {
+		List<Character> characters = characterRepo.findAll();
+		List<ResponseCharacter> responseCharacters = new ArrayList<ResponseCharacter>();
+		for (Character character : characters) {
+			ResponseCharacter responseCharacter = new ResponseCharacter();
+			responseCharacter.setId(character.getId());
+			responseCharacter.setName(character.getName());
+			responseCharacter.setImage(character.getImage());
+			
+			responseCharacters.add(responseCharacter);
+		}
+		return responseCharacters;
 	}
 
 	@Override
@@ -79,6 +90,68 @@ public class CharacterServiceImp implements CharacterService{
 		Character character = modelMapper.map(characterDTO, Character.class);
 		
 		return character;
+	}
+
+	//EJERCICIO 6: ----------------------------------------------
+	
+	@Override
+	public List<ResponseCharacter> getCharactersByName(String value) {
+		List<Character> characters = characterRepo.getListByName(value);
+		List<ResponseCharacter> responseCharacters = new ArrayList<ResponseCharacter>();
+		for (Character character : characters) {
+			ResponseCharacter responseCharacter = new ResponseCharacter();
+			responseCharacter.setId(character.getId());
+			responseCharacter.setName(character.getName());
+			responseCharacter.setImage(character.getImage());
+			
+			responseCharacters.add(responseCharacter);
+		}
+		return responseCharacters;
+	}
+
+	@Override
+	public List<ResponseCharacter> getCharactersByAge(int value) {
+		List<Character> characters = characterRepo.getListByAge(value);
+		List<ResponseCharacter> responseCharacters = new ArrayList<ResponseCharacter>();
+		for (Character character : characters) {
+			ResponseCharacter responseCharacter = new ResponseCharacter();
+			responseCharacter.setId(character.getId());
+			responseCharacter.setName(character.getName());
+			responseCharacter.setImage(character.getImage());
+			
+			responseCharacters.add(responseCharacter);
+		}
+		return responseCharacters;
+	}
+
+	@Override
+	public List<ResponseCharacter> getCharactersByMediaId(Long value) {
+		List<Character> characters = characterRepo.getListByMediaId(value);
+		List<ResponseCharacter> responseCharacters = new ArrayList<ResponseCharacter>();
+		for (Character character : characters) {
+			ResponseCharacter responseCharacter = new ResponseCharacter();
+			responseCharacter.setId(character.getId());
+			responseCharacter.setName(character.getName());
+			responseCharacter.setImage(character.getImage());
+			
+			responseCharacters.add(responseCharacter);
+		}
+		return responseCharacters;
+	}
+
+	@Override
+	public List<ResponseCharacter> getCharactersByWeight(double value) {
+		List<Character> characters = characterRepo.getListByWeight(value);
+		List<ResponseCharacter> responseCharacters = new ArrayList<ResponseCharacter>();
+		for (Character character : characters) {
+			ResponseCharacter responseCharacter = new ResponseCharacter();
+			responseCharacter.setId(character.getId());
+			responseCharacter.setName(character.getName());
+			responseCharacter.setImage(character.getImage());
+			
+			responseCharacters.add(responseCharacter);
+		}
+		return responseCharacters;
 	}
 
 }

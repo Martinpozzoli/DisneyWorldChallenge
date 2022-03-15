@@ -1,5 +1,7 @@
 package com.disneyworld.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.disneyworld.dto.MediaDTO;
+import com.disneyworld.dto.ResponseMedia;
 import com.disneyworld.entities.Image;
 import com.disneyworld.services.ImageService;
 import com.disneyworld.services.MediaService;
@@ -30,6 +33,26 @@ public class MediaController {
 	
 	@Autowired
 	private ImageService imageService;
+	
+	@GetMapping()
+	public List<ResponseMedia> getAllMedia(){
+		return mediaService.getAllMedia();
+	}
+	
+	@GetMapping("/{name}")
+	public List<ResponseMedia> getMediaByTitle(@PathVariable(name = "name") String title){
+		return mediaService.getMediaByTitle(title);
+	}
+	
+	@GetMapping("/{genre}")
+	public List<ResponseMedia> getMediaByGenre(@PathVariable(name = "genre") Long genreId){
+		return mediaService.getMediaByGenre(genreId);
+	}
+	
+	@GetMapping("/{order}")
+	public List<ResponseMedia> getMediaByReleaseDate(@PathVariable(name = "order") String order){
+		return mediaService.getMediasByReleaseDate(order);
+	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<MediaDTO> getMediaById(@PathVariable(name = "id") Long id){

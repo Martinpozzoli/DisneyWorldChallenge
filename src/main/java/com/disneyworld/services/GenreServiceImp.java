@@ -1,5 +1,6 @@
 package com.disneyworld.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.disneyworld.dto.GenreDTO;
+import com.disneyworld.dto.ResponseGenre;
 import com.disneyworld.entities.Genre;
 import com.disneyworld.exceptions.ResourceNotFoundException;
 import com.disneyworld.repositories.GenreRepository;
@@ -37,9 +39,18 @@ public class GenreServiceImp implements GenreService{
 	}
 
 	@Override
-	public List<GenreDTO> getAllGenres() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ResponseGenre> getAllGenres() {
+		List<Genre> genres = genreRepo.findAll();
+		List<ResponseGenre> responseGenres = new ArrayList<ResponseGenre>();
+		for(Genre genre : genres) {
+			ResponseGenre responseGenre = new ResponseGenre();
+			responseGenre.setId(genre.getId());
+			responseGenre.setName(genre.getName());
+			responseGenre.setImage(genre.getImage());
+			
+			responseGenres.add(responseGenre);
+		}
+		return responseGenres;
 	}
 
 	@Override

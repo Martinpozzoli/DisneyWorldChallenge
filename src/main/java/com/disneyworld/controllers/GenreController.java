@@ -1,5 +1,7 @@
 package com.disneyworld.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.disneyworld.dto.GenreDTO;
+import com.disneyworld.dto.ResponseGenre;
 import com.disneyworld.entities.Image;
 import com.disneyworld.services.GenreService;
 import com.disneyworld.services.ImageService;
@@ -30,6 +33,11 @@ public class GenreController {
 	
 	@Autowired
 	private ImageService imageService;
+	
+	@GetMapping()
+	public List<ResponseGenre> getAllGenres(){
+		return genreService.getAllGenres();
+	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<GenreDTO> getGenreById(@PathVariable(name = "id") Long id){
