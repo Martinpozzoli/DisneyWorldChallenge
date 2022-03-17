@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -64,11 +65,13 @@ public class CharacterController {
 		return characterService.getCharactersByMediaId(mediaId);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<CharacterDTO> saveCharacter(@Valid @RequestBody CharacterDTO characterDTO){
 		return new ResponseEntity<>(characterService.createCharacter(characterDTO), HttpStatus.CREATED);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/{id}/update-image")
 	public ResponseEntity<CharacterDTO> saveCharacterImage(@RequestParam(required = true, value = "image") MultipartFile file, 
 														   @PathVariable(name = "id") Long id){
@@ -88,12 +91,14 @@ public class CharacterController {
 		return new ResponseEntity<>(characterDTO, HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<CharacterDTO> updateCharacter(@Valid @RequestBody CharacterDTO characterDTO, @PathVariable(name = "id") Long id){
 		CharacterDTO responseCharacter = characterService.updateCharacter(characterDTO, id);
 		return new ResponseEntity<>(responseCharacter, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> deleteCharacter(@PathVariable(name = "id") Long id){
 		characterService.deleteCharacter(id);

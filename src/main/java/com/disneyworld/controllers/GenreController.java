@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,11 +45,13 @@ public class GenreController {
 		return ResponseEntity.ok(genreService.getGenreById(id));
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<GenreDTO> saveGenre(@Valid @RequestBody GenreDTO genreDTO){
 		return new ResponseEntity<>(genreService.createGenre(genreDTO), HttpStatus.CREATED);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/{id}/update-image")
 	public ResponseEntity<GenreDTO> saveGenreImage(@RequestParam(required = true, value = "image") MultipartFile file,
 												   @PathVariable(name = "id") Long id){
@@ -68,12 +71,14 @@ public class GenreController {
 		return new ResponseEntity<>(genreDTO, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<GenreDTO> updateGenre(@Valid @RequestBody GenreDTO genreDTO, @PathVariable(name = "id") Long id){
 		GenreDTO responseGenre = genreService.updateGenre(genreDTO, id);
 		return new ResponseEntity<>(responseGenre, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> deleteGenre(@PathVariable(name = "id") Long id){
 		genreService.deleteGenre(id);

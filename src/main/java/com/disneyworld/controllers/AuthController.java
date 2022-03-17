@@ -23,6 +23,7 @@ import com.disneyworld.repositories.RoleRepository;
 import com.disneyworld.repositories.UserRepository;
 import com.disneyworld.security.JwtAuthResponseDTO;
 import com.disneyworld.security.JwtTokenProvider;
+import com.disneyworld.services.EmailService;
 
 @RestController
 @RequestMapping("/auth")
@@ -42,6 +43,9 @@ public class AuthController {
 	
 	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
+	
+	@Autowired
+	private EmailService emailService;
 	
 	@PostMapping("/login")
 	public ResponseEntity<JwtAuthResponseDTO> authenticateUser(@RequestBody LoginDTO loginDTO){
@@ -73,7 +77,9 @@ public class AuthController {
 		
 		userRepo.save(user);
 		
-		return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
+		String emailResponse = emailService.sendText(user.getEmail());
+		
+		return new ResponseEntity<>("User registered successfully! " + emailResponse, HttpStatus.OK);
 	}
 	
 }

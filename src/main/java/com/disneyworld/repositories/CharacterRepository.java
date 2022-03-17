@@ -19,7 +19,7 @@ public interface CharacterRepository extends JpaRepository<Character, Long>{
 	@Query("SELECT c FROM Character c WHERE c.weight =:weight")
 	public List<Character> getListByWeight(@Param("weight") double weight);
 	
-	@Query("SELECT c FROM Character c LEFT JOIN FETCH t.medias m WHERE m.id =:id")
+	@Query("SELECT c FROM Character c INNER JOIN c.medias m WHERE m.id =:id")
 	public List<Character> getListByMediaId(@Param("id") Long id);
 	
 }
