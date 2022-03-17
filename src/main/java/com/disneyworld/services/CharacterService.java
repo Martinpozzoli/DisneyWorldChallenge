@@ -17,6 +17,8 @@ public interface CharacterService {
 	
 	public void deleteCharacter(Long id);
 	
+	public CharacterDTO updateMediaCharacter(Long mediaId, Long characterId);
+	
 	//EJERCICIO 6:
 	
 	public List<ResponseCharacter> getCharactersByName(String value);

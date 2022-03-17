@@ -36,23 +36,23 @@ public class MediaController {
 	private ImageService imageService;
 	
 	@GetMapping()
-	public List<ResponseMedia> getAllMedia(){
+	public List<ResponseMedia> getMedia(
+			@RequestParam(required = false) String title,
+			@RequestParam(required = false) Long genreId,
+			@RequestParam(required = false) String order){
+		//By Title:
+		if((title != null && !title.isBlank()) && genreId == null && (order == null || order.isBlank())) {
+			return mediaService.getMediaByTitle(title);
+		//By Genre Id:
+		}else if((title == null || title.isBlank()) && genreId != null && (order == null || order.isBlank())) {
+			return mediaService.getMediaByGenre(genreId);
+		//By ReleaseDate ASC or DESC:
+		}else if((title == null || title.isBlank()) && genreId == null && (order != null && !order.isBlank())) {
+			return mediaService.getMediasByReleaseDate(order);
+		}else {	
+		//All Media:
 		return mediaService.getAllMedia();
-	}
-	
-	@GetMapping("/{name}")
-	public List<ResponseMedia> getMediaByTitle(@PathVariable(name = "name") String title){
-		return mediaService.getMediaByTitle(title);
-	}
-	
-	@GetMapping("/{genre}")
-	public List<ResponseMedia> getMediaByGenre(@PathVariable(name = "genre") Long genreId){
-		return mediaService.getMediaByGenre(genreId);
-	}
-	
-	@GetMapping("/{order}")
-	public List<ResponseMedia> getMediaByReleaseDate(@PathVariable(name = "order") String order){
-		return mediaService.getMediasByReleaseDate(order);
+		}
 	}
 	
 	@GetMapping("/{id}")
@@ -91,6 +91,16 @@ public class MediaController {
 	@PutMapping("/{id}")
 	public ResponseEntity<MediaDTO> updateMedia(@Valid @RequestBody MediaDTO mediaDTO, @PathVariable(name = "id") Long id){
 		MediaDTO responseMedia = mediaService.updateMedia(mediaDTO, id);
+		return new ResponseEntity<>(responseMedia, HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ADMIN')")
+	@PutMapping("/add-character/{mediaId}/{characterId}")
+	public ResponseEntity<MediaDTO> updateMediaCharacter(
+			@PathVariable(name = "mediaId") Long mediaId, 
+			@PathVariable(name = "characterId") Long characterId){
+		
+		MediaDTO responseMedia = mediaService.updateMediaCharacter(mediaId, characterId);
 		return new ResponseEntity<>(responseMedia, HttpStatus.OK);
 	}
 	

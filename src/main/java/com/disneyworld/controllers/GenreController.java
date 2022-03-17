@@ -79,6 +79,15 @@ public class GenreController {
 	}
 	
 	@PreAuthorize("hasRole('ADMIN')")
+	@PutMapping("/add-media/{genreId}/{mediaId}")
+	public ResponseEntity<GenreDTO> updateGenreMedia(
+			@PathVariable(name = "genreId") Long genreId,
+			@PathVariable(name = "mediaId") Long mediaId){
+		GenreDTO responseGenre = genreService.updateMediaGenre(mediaId, genreId);
+		return new ResponseEntity<>(responseGenre, HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> deleteGenre(@PathVariable(name = "id") Long id){
 		genreService.deleteGenre(id);

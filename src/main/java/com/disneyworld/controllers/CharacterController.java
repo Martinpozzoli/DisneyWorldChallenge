@@ -35,34 +35,33 @@ public class CharacterController {
 	@Autowired
 	private ImageService imageService;
 	
-	@GetMapping()
-	public List<ResponseCharacter> getAllCharacters(){
-		return characterService.getAllCharacters();
-	}
-	
 	@GetMapping("/{id}")
 	public ResponseEntity<CharacterDTO> getCharacterById(@PathVariable(name = "id") Long id){
 		return ResponseEntity.ok(characterService.getCharacterById(id));
 	}
 	
-	@GetMapping("/{name}")
-	public List<ResponseCharacter> getCharactersByName(@PathVariable(name = "name") String name){
-		return characterService.getCharactersByName(name);
-	}
-	
-	@GetMapping("/{age}")
-	public List<ResponseCharacter> getCharactersByAge(@PathVariable(name = "age") int age){
-		return characterService.getCharactersByAge(age);
-	}
-	
-	@GetMapping("/{weight}")
-	public List<ResponseCharacter> getCharactersByWeight(@PathVariable(name = "weight") double weight){
-		return characterService.getCharactersByWeight(weight);
-	}
-	
-	@GetMapping("/{movies}")
-	public List<ResponseCharacter> getCharactersByMediaId(@PathVariable(name = "movies") Long mediaId){
-		return characterService.getCharactersByMediaId(mediaId);
+	@GetMapping()
+	public List<ResponseCharacter> getCharacters(
+			@RequestParam(required = false) String name,
+			@RequestParam(required = false) Integer age,
+			@RequestParam(required = false) Double weight,
+			@RequestParam(required = false) Long mediaId){
+		//By Name:
+		if((name != null && !name.isBlank()) && age == null && weight == null && mediaId == null) {
+			return characterService.getCharactersByName(name);
+		//By Age:
+		}else if((name == null || name.isBlank()) && age != null && weight == null && mediaId == null) {
+			return characterService.getCharactersByAge(age);
+		//By Weight:
+		}else if((name == null || name.isBlank()) && age == null && weight != null && mediaId == null) {
+			return characterService.getCharactersByWeight(weight);
+		//By Media Id:
+		}else if((name == null || name.isBlank()) && age == null && weight == null && mediaId != null) {
+			return characterService.getCharactersByMediaId(mediaId);
+		//All Characters:
+		}else {
+		return characterService.getAllCharacters();
+		}
 	}
 	
 	@PreAuthorize("hasRole('ADMIN')")
@@ -95,6 +94,15 @@ public class CharacterController {
 	@PutMapping("/{id}")
 	public ResponseEntity<CharacterDTO> updateCharacter(@Valid @RequestBody CharacterDTO characterDTO, @PathVariable(name = "id") Long id){
 		CharacterDTO responseCharacter = characterService.updateCharacter(characterDTO, id);
+		return new ResponseEntity<>(responseCharacter, HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ADMIN')")
+	@PutMapping("/add-media/{characterId}/{mediaId}")
+	public ResponseEntity<CharacterDTO> updateCharacterMedia(
+			@PathVariable(name = "characterId") Long characterId,
+			@PathVariable(name = "mediaId") Long mediaId){
+		CharacterDTO responseCharacter = characterService.updateMediaCharacter(mediaId, characterId);
 		return new ResponseEntity<>(responseCharacter, HttpStatus.OK);
 	}
 	

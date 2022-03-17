@@ -2,6 +2,7 @@ package com.disneyworld.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +11,19 @@ import org.springframework.stereotype.Service;
 import com.disneyworld.dto.GenreDTO;
 import com.disneyworld.dto.ResponseGenre;
 import com.disneyworld.entities.Genre;
+import com.disneyworld.entities.Media;
 import com.disneyworld.exceptions.ResourceNotFoundException;
 import com.disneyworld.repositories.GenreRepository;
+import com.disneyworld.repositories.MediaRepository;
 
 @Service
 public class GenreServiceImp implements GenreService{
 	
 	@Autowired
 	private GenreRepository genreRepo;
+	
+	@Autowired
+	private MediaRepository mediaRepo;
 	
 	@Autowired
 	private ModelMapper modelMapper;
@@ -83,4 +89,16 @@ public class GenreServiceImp implements GenreService{
 		return genre;
 	}
 
+	@Override
+	public GenreDTO updateMediaGenre(Long mediaId, Long genreId) {
+		Media media = mediaRepo.findById(mediaId).orElseThrow(() -> new ResourceNotFoundException("Media", "id", mediaId));
+		Genre genre = genreRepo.findById(genreId).orElseThrow(() -> new ResourceNotFoundException("Genre", "id", genreId));
+		
+		Set<Media> medias = genre.getMedias();
+		medias.add(media);
+		genre.setMedias(medias);
+		
+		return mapDTO(genreRepo.save(genre));
+	}
+	
 }

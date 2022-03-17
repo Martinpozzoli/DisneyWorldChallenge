@@ -2,22 +2,28 @@ package com.disneyworld.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.disneyworld.entities.Character;
+import com.disneyworld.entities.Media;
 import com.disneyworld.exceptions.ResourceNotFoundException;
 import com.disneyworld.dto.CharacterDTO;
 import com.disneyworld.dto.ResponseCharacter;
 import com.disneyworld.repositories.CharacterRepository;
+import com.disneyworld.repositories.MediaRepository;
 
 @Service
 public class CharacterServiceImp implements CharacterService{
 
 	@Autowired
 	private CharacterRepository characterRepo;
+	
+	@Autowired
+	private MediaRepository mediaRepo;
 	
 	@Autowired
 	private ModelMapper modelMapper;
@@ -152,6 +158,18 @@ public class CharacterServiceImp implements CharacterService{
 			responseCharacters.add(responseCharacter);
 		}
 		return responseCharacters;
+	}
+	
+	@Override
+	public CharacterDTO updateMediaCharacter(Long mediaId, Long characterId) {
+		Media media = mediaRepo.findById(mediaId).orElseThrow(() -> new ResourceNotFoundException("Media", "id", mediaId));
+		Character character = characterRepo.findById(characterId).orElseThrow(() -> new ResourceNotFoundException("Character", "id", characterId));
+		
+		Set<Media> medias = character.getMedias();
+		medias.add(media);
+		character.setMedias(medias);
+		
+		return mapDTO(characterRepo.save(character));
 	}
 
 }

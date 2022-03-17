@@ -1,6 +1,6 @@
 package com.disneyworld.dto;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import com.disneyworld.entities.Image;
 
@@ -9,7 +9,7 @@ public class ResponseMedia {
 	private Long id;
 	private String title;
 	private Image image;
-	private Date releaseDate;
+	private LocalDate releaseDate;
 	
 	public ResponseMedia() {
 		super();
@@ -33,10 +33,10 @@ public class ResponseMedia {
 	public void setImage(Image image) {
 		this.image = image;
 	}
-	public Date getReleaseDate() {
+	public LocalDate getReleaseDate() {
 		return releaseDate;
 	}
-	public void setReleaseDate(Date releaseDate) {
+	public void setReleaseDate(LocalDate releaseDate) {
 		this.releaseDate = releaseDate;
 	}
 	

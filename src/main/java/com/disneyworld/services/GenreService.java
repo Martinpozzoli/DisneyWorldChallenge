@@ -17,4 +17,6 @@ public interface GenreService {
 	
 	public void deleteGenre(Long id);
 	
+	public GenreDTO updateMediaGenre(Long mediaId, Long genreId);
+	
 }

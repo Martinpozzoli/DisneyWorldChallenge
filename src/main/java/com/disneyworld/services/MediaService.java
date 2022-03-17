@@ -18,6 +18,8 @@ public interface MediaService {
 
 	public void deleteMedia(Long id);
 	
+	public MediaDTO updateMediaCharacter(Long mediaId, Long characterId);
+	
 	//EJERCICIO 6: -----------------------
 	
 	public List<ResponseMedia> getMediaByTitle(String value);

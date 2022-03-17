@@ -1,6 +1,6 @@
 package com.disneyworld.dto;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,10 +22,8 @@ public class MediaDTO {
 	@Size(min = 2, message = "Title must be at least 2 characters long")
 	private String title;
 	
-	@NotEmpty
-	private Date releaseDate;
+	private LocalDate releaseDate;
 	
-	@NotEmpty
 	@Min(1)
 	@Max(5)
 	private int rating;
@@ -33,7 +31,7 @@ public class MediaDTO {
 	private Set<Character> characters = new HashSet<>();
 	
 	
-	public MediaDTO(long id, Image image, String title, Date releaseDate, int rating, Set<Character> characters) {
+	public MediaDTO(long id, Image image, String title, LocalDate releaseDate, int rating, Set<Character> characters) {
 		super();
 		this.id = id;
 		this.image = image;
@@ -71,11 +69,11 @@ public class MediaDTO {
 		this.title = title;
 	}
 
-	public Date getReleaseDate() {
+	public LocalDate getReleaseDate() {
 		return releaseDate;
 	}
 
-	public void setReleaseDate(Date releaseDate) {
+	public void setReleaseDate(LocalDate releaseDate) {
 		this.releaseDate = releaseDate;
 	}
 

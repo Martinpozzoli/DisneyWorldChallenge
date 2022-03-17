@@ -17,6 +17,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name="characters",uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
 public class Character {
@@ -40,9 +43,10 @@ public class Character {
 	@Column(name = "history")
 	private String history;
 	
-	//@JsonBackReference
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name = "character_medias", joinColumns = @JoinColumn(name = "character_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "media_id", referencedColumnName = "id"))
+	@JsonBackReference
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(name = "media_characters", joinColumns = @JoinColumn(name = "character_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "media_id", referencedColumnName = "id"))
+	@JsonIgnoreProperties("characters")
 	private Set<Media> medias = new HashSet<>();
 
 	

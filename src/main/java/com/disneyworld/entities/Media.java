@@ -1,6 +1,6 @@
 package com.disneyworld.entities;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,6 +18,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name="media",uniqueConstraints = {@UniqueConstraint(columnNames = {"title"})})
 public class Media {
@@ -33,17 +35,18 @@ public class Media {
 	private String title;
 	
 	@Column(name = "release_date")
-	private Date releaseDate;
+	private LocalDate releaseDate;
 	
 	@Column(name = "rating")
 	private int rating;
 	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "media_characters", joinColumns = @JoinColumn(name = "media_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "character_id", referencedColumnName = "id"))
+	@JsonIgnoreProperties("medias")
 	private Set<Character> characters = new HashSet<>();
 	
 	
-	public Media(long id, Image image, String title, Date releaseDate, int rating, Set<Character> characters) {
+	public Media(long id, Image image, String title, LocalDate releaseDate, int rating, Set<Character> characters) {
 		super();
 		this.id = id;
 		this.image = image;
@@ -81,11 +84,11 @@ public class Media {
 		this.title = title;
 	}
 
-	public Date getReleaseDate() {
+	public LocalDate getReleaseDate() {
 		return releaseDate;
 	}
 
-	public void setReleaseDate(Date releaseDate) {
+	public void setReleaseDate(LocalDate releaseDate) {
 		this.releaseDate = releaseDate;
 	}
 
