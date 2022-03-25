@@ -4,3 +4,5 @@ Basada en el universo Disney esta Api Rest permite la creación, modificación e
 Herramientas utilizadas: JAVA, Spring Boot, MySQL, Postman, Swagger, JPA, Hibernate, Spring Security, JWT, SendGrid.
 
 Para acceder a la documentación una vez que la aplicación este en funcionamiento ingrese al siguiente enlace: http://localhost:8080/swagger-ui.html
+
+Consignas: https://drive.google.com/file/d/1thfBIBJEv2I1pAzIhZTkmUMwUdrTVr-3/view?usp=sharing
