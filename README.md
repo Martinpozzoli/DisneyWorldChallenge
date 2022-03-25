@@ -5,4 +5,4 @@ Herramientas utilizadas: JAVA, Spring Boot, MySQL, Postman, Swagger, JPA, Hibern
 
 Para acceder a la documentación una vez que la aplicación este en funcionamiento ingrese al siguiente enlace: http://localhost:8080/swagger-ui.html
 
-Consignas: https://drive.google.com/file/d/1thfBIBJEv2I1pAzIhZTkmUMwUdrTVr-3/view?usp=sharing
+Consignas: https://drive.google.com/file/d/117vzKHbY5P943MQMhNSb_sEOQqvdDkX-/view?usp=sharing
